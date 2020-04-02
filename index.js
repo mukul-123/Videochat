@@ -1,7 +1,7 @@
 // navigator.mediaDevices.getUserMedia(constraints);
-navigator.mediaDevices.getUserMedia({
+navigator.getUserMedia({
     video: true,
-    audio: false
+    audio: true
 }, function (stream) {
 
     var Peer = require('simple-peer');
@@ -30,13 +30,15 @@ navigator.mediaDevices.getUserMedia({
     peer.on('data', function (data) {
         document.getElementById('messages').textContent += data + "\n";
     })
+
     peer.on('stream',function(stream){
         var video=document.createElement('video')
         document.body.appendChild(video)
-        video.src=window.URL.createObjectURL(stream)
+        const mediaStream = new MediaStream(stream);
+        video.srcObject = mediaStream;
         video.play();
-
     })
+
 }, function (err) {
     console.log(err);
 })
